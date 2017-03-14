@@ -47,7 +47,7 @@ let Search = ( () => {
 		}
 	};
 
-	let searchClick = (ev) => {
+	let searchExe = (ev) => {
 		ev.preventDefault();
 		Pagination.destroy();
 		filterStudents();
@@ -55,7 +55,8 @@ let Search = ( () => {
 
 	let init = () => {
 		addSearch('.page-header');
-		$('.student-search button').on('click', searchClick);
+		$('.student-search button').on('click', searchExe);
+		$('.student-search input').on('keyup', (e) => { if(e.which === 13) searchExe(e); });
 	};
 
 	return {
