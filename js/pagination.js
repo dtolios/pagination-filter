@@ -1,41 +1,34 @@
-const page = document.querySelector(".page");
-const studentList = document.querySelector(".student-list");
-const numStudents = studentList.querySelectorAll("li").length;
-const numPages = Math.ceil(numStudents / 10);
+// Useful Constants for calculating pagination
+const $students = $('.student-list').children();
+const numStudents = $students.length;
+const numPages = Math.ceil( numStudents / 10 );
 
-function createButton(text, active) {
-	
-	let button = document.createElement("li");
-	let a = document.createElement("a");
+// Initially only show ten students
+$('.student-item:gt(9)').hide();
 
-	// Set anchor tag attributes and text
-	if(active) {
-		a.className = "active";
-	}
-	a.href = "#";
-	a.innerText = text;
+// Add pagination div
+$('.page').append('<div class="pagination"><ul></ul></div>');
 
-	// append the anchor tag to the list item and return
-	button.appendChild(a);
-	return button;
+// Add pagination buttons
+for(let i = 1; i <= numPages; i++) {
+	if(i === 1)
+		var $button = $('<li><a href="#" class="active">' + i + '</a></li>');
+	else
+		var $button = $('<li><a href="#">' + i + '</a></li>');
+	$('.pagination ul').append($button);
 }
 
-function createPaginationButtons() {
-	
-	let buttonList = document.createElement("ul");
-	let button = createButton(1, true);
-	
-	for(let i = 1; i < numPages; i++) {
-		buttonList.appendChild(button);
-		button = createButton(i + 1, false);
-	}
-	buttonList.appendChild(button);
+// Click event for loading appropriate subset of students
+$('.pagination').on('click', ( event ) => {
+	let $target = $(event.target);
+	let endIndex = parseInt($target.text()) * 10;
+	let startIndex = endIndex - 10;
 
-	let pagination = document.createElement("div");
-	pagination.setAttribute("class", "pagination");
-	pagination.appendChild(buttonList);
-	
-	page.appendChild(pagination);
-}
+	// Set active button
+	$(this).find('.active').removeClass('active');
+	$target.addClass('active');
+	// Show correct range of students
+	$('.student-item').hide();
+	$('.student-item').slice(startIndex, endIndex).show();
+});
 
-createPaginationButtons();
