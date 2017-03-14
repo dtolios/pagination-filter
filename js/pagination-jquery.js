@@ -1,14 +1,15 @@
-
-// First, only show ten students
-$('.student-item:gt(9)').hide();
-
-// Create Pagination buttons
+// Useful Constants for calculating pagination
 const $students = $('.student-list').children();
 const numStudents = $students.length;
 const numPages = Math.ceil( numStudents / 10 );
 
+// Initially only show ten students
+$('.student-item:gt(9)').hide();
+
+// Add pagination div
 $('.page').append('<div class="pagination"><ul></ul></div>');
 
+// Add pagination buttons
 for(let i = 1; i <= numPages; i++) {
 	if(i === 1)
 		var $button = $('<li><a href="#" class="active">' + i + '</a></li>');
@@ -30,3 +31,4 @@ $('.pagination').on('click', function( event ) {
 	$('.student-item').hide();
 	$('.student-item').slice(startIndex, endIndex).show();
 });
+
