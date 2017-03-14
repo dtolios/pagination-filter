@@ -1,44 +1,64 @@
-// Add student-search to the header
-$('.page-header').append(
-	'<div class="student-search">\
-		<input placeholder="Search for students...">\
-		<button>Search</button>\
-	</div>'
-	);
+let Search = ( () => {
+	let addSearch = (el) => {
+		let searchHTML = '<div class="student-search">\
+							<input placeholder="Search for students...">\
+							<button>Search</button>\
+						</div>';
+		$(el).append(searchHTML);
+	};
 
-let query = '';
-
-// Search button filter functionality
-$('.student-search button').on('click', () => {
-	query = $('.student-search input').val().toUpperCase();
-
-	if( query === '') {
+	let reset = () => {
 		$('.student-item').show();
-	}
-	else {
-		$('.student-item').hide();
-		$('.student-item.cf').filter(function(index) {
-			let isInName = $('h3', this).text().toUpperCase().includes(query);
-			let isInEmail = $('.email', this).text().toUpperCase().includes(query);
-			return isInName || isInEmail;
-		}).show();
-	}
-});
+	};
 
-// Additional search functionality for clicking 'Enter' key
-$('.student-search input').on('keypress', (e) => {
-	if(e.which === 13) {
-		query = $('.student-search input').val().toUpperCase();
-		if( query === '') {
-			$('.student-item').show();
+	let getQuery = () => {
+		return $('.student-search input').val();
+	};
+
+	let appendError = () => {
+		let $error = $('<li id="search-error">No Matching Students Found</li>');
+		$('.student-list').append($error);
+	};
+
+	let removeError = () => {
+		$('#search-error').remove();
+	};
+
+	let filterStudents = () => {
+		let query = getQuery().toUpperCase();
+
+		if( $('#search-error').length ) {
+			removeError();
+		}
+		if( query === '' ) {
+			reset();
 		}
 		else {
 			$('.student-item').hide();
-			$('.student-item.cf').filter(function(index) {
+			$('.student-item').filter(function(index) {
 				let isInName = $('h3', this).text().toUpperCase().includes(query);
 				let isInEmail = $('.email', this).text().toUpperCase().includes(query);
 				return isInName || isInEmail;
 			}).show();
+			if( $('.student-item').find(':visible').length === 0 ) {
+				appendError();
+			} 
 		}
-	}
-});
+	};
+
+	let searchClick = (ev) => {
+		ev.preventDefault();
+		filterStudents();
+	};
+
+	let init = () => {
+		addSearch('.page-header');
+		$('.student-search button').on('click', searchClick);
+	};
+
+	return {
+		init: init
+	};
+})();
+
+Search.init();
