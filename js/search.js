@@ -9,6 +9,7 @@ let Search = ( () => {
 
 	let reset = () => {
 		$('.student-item').show();
+		Pagination.init();
 	};
 
 	let getQuery = () => {
@@ -48,6 +49,7 @@ let Search = ( () => {
 
 	let searchClick = (ev) => {
 		ev.preventDefault();
+		Pagination.destroy();
 		filterStudents();
 	};
 

@@ -33,6 +33,10 @@ let Pagination = ( () => {
 		$('.pagination ul').on('click', 'li', buttonClick);
 	};
 
+	let destroy = () => {
+		$('.pagination').remove();
+	};
+
 	let setActive = ($target) => {
 		// Set active button
 		$('.pagination ul li').find('.active').removeClass('active');
@@ -55,7 +59,8 @@ let Pagination = ( () => {
 	};
 
 	return {
-		init: init
+		init: init,
+		destroy: destroy
 	}
 
 })();
