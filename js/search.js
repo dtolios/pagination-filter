@@ -78,3 +78,6 @@ let Search = ( () => {
 		init: init
 	};
 })();
+
+// Enable search on the page
+Search.init();

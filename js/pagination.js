@@ -80,3 +80,6 @@ let Pagination = ( () => {
 	}
 
 })();
+
+// Enable pagination on the page
+Pagination.init();
