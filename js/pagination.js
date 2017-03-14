@@ -19,13 +19,13 @@ for(let i = 1; i <= numPages; i++) {
 }
 
 // Click event for loading appropriate subset of students
-$('.pagination').on('click', ( event ) => {
+$('.pagination ul').on('click', 'li', ( event ) => {
 	let $target = $(event.target);
 	let endIndex = parseInt($target.text()) * 10;
 	let startIndex = endIndex - 10;
 
 	// Set active button
-	$(this).find('.active').removeClass('active');
+	$('.pagination ul li').find('.active').removeClass('active');
 	$target.addClass('active');
 	// Show correct range of students
 	$('.student-item').hide();
