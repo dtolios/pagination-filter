@@ -102,16 +102,17 @@ let Pagination = ( () => {
 		// Show initial active students
 		showActiveStudents($studentList.filter('.active'));
 		
-		// Add pagination buttons
-		for(let i = 1; i <= this.numPages; i++) {
-			addPageButton(i);
+		// Add pagination buttons only if the number of pages is greater than 1	
+		if(this.numPages > 1) {
+			for(let i = 1; i <= this.numPages; i++) {
+				addPageButton(i);
+			}
+
+			// Set button 1 to active
+			$('.pagination ul li:first-child a').addClass('active');
+			// Add event listener
+			$('.pagination ul').on('click', 'li', {$studentList: $studentList}, buttonClick);
 		}
-
-		// Set button 1 to active
-		$('.pagination ul li:first-child a').addClass('active');
-
-		// Add event listener
-		$('.pagination ul').on('click', 'li', {$studentList: $studentList}, buttonClick);
 	};
 
 	// EFFECTS: removes page buttons, listeners, and all active students
