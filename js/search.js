@@ -1,5 +1,8 @@
 // Search module for enabling search on a Student List page
 let Search = ( () => {
+
+	// PRIVATE PROPERTIES //
+	const $studentItems = $('.student-item.cf');
 	
 	// PRIVATE METHODS: //
 
@@ -12,17 +15,17 @@ let Search = ( () => {
 		$(el).append(searchHTML);
 	};
 
-	// EFFECTS: resets the visibility for all students and re-initializes pagination
+	// EFFECTS: Removes all matched students
 	let reset = () => {
-		$('.student-item cf').removeClass('matched');
+		$studentItems.removeClass('matched');
 	};
 
-	// EFFECTS: returns the user input from the search field
+	// EFFECTS: Returns the user input from the search field
 	let getQuery = () => {
 		return $('.student-search input').val();
 	};
 
-	// EFFECTS: appends an error message as a list item to the student list
+	// EFFECTS: Appends an error message as a list item to the student list
 	let appendError = () => {
 		let $error = $('<li class="search-error">No Matching Students Found</li>');
 		$('.student-list').append($error);
@@ -35,6 +38,7 @@ let Search = ( () => {
 
 	// EFFECTS: Toggles the visibility of student items based on the query contents
 	let filterStudents = () => {
+		// Get the user query
 		let query = getQuery().toUpperCase();
 
 		// Remove any error that occurred in previous search
@@ -42,25 +46,31 @@ let Search = ( () => {
 			removeError();
 		}
 
+		// Reset any search state
 		reset();
 
-		// If query is not empty, filter students by query and add "matched" className
+		// If query is not empty, filter students by query and add "matched" class name
 		if( query !== '' ) {
-			let $filteredList = $('.student-item').filter(function(index) {
+			// Filter the original list by looking if the query exists in the name or the email address
+			let $filteredList = $studentItems.filter(function(index) {
 					let isInName = $('h3', this).text().toUpperCase().includes(query);
 					let isInEmail = $('.email', this).text().toUpperCase().includes(query);
 					return isInName || isInEmail;
 			});
+
 			$filteredList.addClass('matched');
+			
+			// Check for no search results, display error if true
 			if( $filteredList.length === 0 ) {
 				appendError();
 			}
+			// Reset the pagination for the filteredList
 			Pagination.destroy();
 			Pagination.paginate($filteredList);
 		}
 		else {
 			Pagination.destroy();
-			Pagination.paginate($('.student-item.cf'));
+			Pagination.paginate($studentItems);
 		}
 	};
 
